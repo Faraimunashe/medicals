@@ -50,7 +50,7 @@ def register():
         if user:
             flash('Error email already exists!')
             return redirect(url_for('auth.register'))
-        new_user = User(email=email, password=passwordata, name=name, role=1)
+        new_user = User(branch_id=1, email=email, password=passwordata, name=name, role=1)
         db.session.add(new_user)
         db.session.commit()
 

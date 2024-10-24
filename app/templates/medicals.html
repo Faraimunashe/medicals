@@ -10,22 +10,22 @@
                         </a>
                     </li>
                     <li class="breadcrumb-item"><a href="{{ url_for('dashboard.dashboard') }}">Dashboard</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Patients</li>
+                    <li class="breadcrumb-item active" aria-current="page">Medical History</li>
                 </ol>
             </nav>
-            <h2 class="h4">Patients</h2>
+            <h2 class="h4">Medical History</h2>
         </div>
         <div class="btn-toolbar mb-2 mb-md-0">
-            <a href="{{ url_for('patients.create_patient') }}" class="btn btn-sm btn-gray-800 d-inline-flex align-items-center">
-                Register New Patient
+            <a href="{{ url_for('medicals.create_medicals') }}" class="btn btn-sm btn-gray-800 d-inline-flex align-items-center">
+                Add New Medical Record
             </a>
         </div>
     </div>
 
     <div class="table-settings mb-4">
-        <form method="GET" action="{{ url_for('patients.patients') }}" class="mb-3">
+        <form method="GET" action="{{ url_for('medicals.medicals') }}" class="mb-3">
             <div class="input-group">
-                <input type="text" class="form-control" name="search" placeholder="Search by ref# or name or phone ..." value="{{ search_query }}">
+                <input type="text" class="form-control" name="search" placeholder="Search by patient reference or name ..." value="{{ search_query }}">
                 <button class="btn btn-outline-secondary" type="submit">Search</button>
             </div>
         </form>
@@ -56,26 +56,26 @@
             <thead>
                 <tr>
                     <th class="border-gray-200">#</th>
-                    <th class="border-gray-200">Fullname</th>
-                    <th class="border-gray-200">Gender</th>
-                    <th class="border-gray-200">DOB</th>
-                    <th class="border-gray-200">Phone</th>
+                    <th class="border-gray-200">Patient Reference</th>
+                    <th class="border-gray-200">Temperature</th>
+                    <th class="border-gray-200">Blood Pressure</th>
+                    <th class="border-gray-200">Diagnosis</th>
                     <th class="border-gray-200">Action</th>
                 </tr>
             </thead>
             <tbody>
-                {% for pt in patients %}
+                {% for record in medicals %}
                     <tr>
-                        <td>{{ pt.reference }}</td>
-                        <td>{{ pt.firstnames }} {{ pt.surname }}</td>
-                        <td>{{ pt.gender }}</td>
-                        <td>{{ pt.dob.strftime('%Y-%m-%d') if pt.dob else 'N/A' }}</td>
-                        <td>{{ pt.phone }}</td>
+                        <td>{{ record.id }}</td>
+                        <td>{{ record.reference }}</td>
+                        <td>{{ record.temperature }} °C</td>
+                        <td>{{ record.bp }}</td>
+                        <td>{{ record.diagnosis }}</td>
                         <td>
-                            <a href="{{ url_for('patients.view_patient', id=pt.id) }}" class="btn btn-info">View</a>
-                            <a href="{{ url_for('patients.update_patient', id=pt.id) }}" class="btn btn-warning">Edit</a>
-                            <form action="{{ url_for('patients.delete_patient', id=pt.id) }}" method="POST" style="display:inline;">
-                                <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this patient?');">Delete</button>
+                            <a href="{{ url_for('medicals.view_medical', id=record.id) }}" class="btn btn-info">View</a>
+                            <a href="{{ url_for('medicals.update_medicals', id=record.id) }}" class="btn btn-warning">Edit</a>
+                            <form action="{{ url_for('medicals.delete_medicals', id=record.id) }}" method="POST" style="display:inline;">
+                                <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this medical record?');">Delete</button>
                             </form>
                         </td>
                     </tr>

@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
+        <div class="d-block mb-4 mb-md-0">
+            <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
+                <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
+                    <li class="breadcrumb-item">
+                        <a href="{{ url_for('dashboard.dashboard') }}">
+                            <svg class="icon icon-xxs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                            </svg>
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item"><a href="{{ url_for('dashboard.dashboard') }}">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="{{ url_for('medicals.medicals') }}">Medical History</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Create</li>
+                </ol>
+            </nav>
+            <h2 class="h4">Create Medical History</h2>
+        </div>
+    </div>
+
+    <div class="table-settings mb-4">
+        <div class="row align-items-center justify-content-between">
+            <div class="col-12">
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        {% if "error" in messages[0] %}
+                            <div class="alert alert-danger" role="alert">
+                                <i class="fa fa-exclamation-triangle"></i>
+                                {{ messages[0] }}
+                            </div>
+                        {% else %}
+                            <div class="alert alert-success" role="alert">
+                                <i class="fa fa-check-circle"></i>
+                                {{ messages[0] }}
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                {% endwith %}
+            </div>
+        </div>
+    </div>
+
+    <div class="card border-0 shadow table-wrapper table-responsive">
+        <form method="POST" action="{{ url_for('medicals.create_medicals') }}">
+            {{ form.hidden_tag() }} 
+            <div class="card-body">
+                <div class="mb-3">
+                    {{ form.branch.label(class="form-label") }}
+                    {{ form.branch(class="form-control" + (' is-invalid' if form.branch.errors else '')) }}
+                    {% if form.branch.errors %}
+                        <div class="invalid-feedback">
+                            {% for error in form.branch.errors %}
+                                <div>{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="mb-3">
+                    {{ form.reference.label(class="form-label") }}
+                    {{ form.reference(class="form-control" + (' is-invalid' if form.reference.errors else '')) }}
+                    {% if form.reference.errors %}
+                        <div class="invalid-feedback">
+                            {% for error in form.reference.errors %}
+                                <div>{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="mb-3">
+                    {{ form.temperature.label(class="form-label") }}
+                    {{ form.temperature(class="form-control" + (' is-invalid' if form.temperature.errors else '')) }}
+                    {% if form.temperature.errors %}
+                        <div class="invalid-feedback">
+                            {% for error in form.temperature.errors %}
+                                <div>{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="mb-3">
+                    {{ form.bp.label(class="form-label") }}
+                    {{ form.bp(class="form-control" + (' is-invalid' if form.bp.errors else '')) }}
+                    {% if form.bp.errors %}
+                        <div class="invalid-feedback">
+                            {% for error in form.bp.errors %}
+                                <div>{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="mb-3">
+                    {{ form.description.label(class="form-label") }}
+                    {{ form.description(class="form-control" + (' is-invalid' if form.description.errors else '')) }}
+                    {% if form.description.errors %}
+                        <div class="invalid-feedback">
+                            {% for error in form.description.errors %}
+                                <div>{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="mb-3">
+                    {{ form.diagnosis.label(class="form-label") }}
+                    {{ form.diagnosis(class="form-control" + (' is-invalid' if form.diagnosis.errors else '')) }}
+                    {% if form.diagnosis.errors %}
+                        <div class="invalid-feedback">
+                            {% for error in form.diagnosis.errors %}
+                                <div>{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="mb-3">
+                    {{ form.plan.label(class="form-label") }}
+                    {{ form.plan(class="form-control" + (' is-invalid' if form.plan.errors else '')) }}
+                    {% if form.plan.errors %}
+                        <div class="invalid-feedback">
+                            {% for error in form.plan.errors %}
+                                <div>{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="card-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </form>
+    </div>
+{% endblock %}

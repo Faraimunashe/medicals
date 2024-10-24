@@ -9,7 +9,7 @@ login_manager = LoginManager()
 def create_app():
     app = Flask(__name__)
     app.config['SECRET_KEY'] = 'ProfessorSecret'
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///medicals.db'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///medicalss.db'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     # Initialize extensions with the app
@@ -23,10 +23,12 @@ def create_app():
     from .auth import auth_bp
     from .dashboard import dashboard_bp
     from .patient import patients_bp
+    from .medical import medicals_bp
 
     app.register_blueprint(auth_bp)
     app.register_blueprint(dashboard_bp)
     app.register_blueprint(patients_bp)
+    app.register_blueprint(medicals_bp)
 
     # Import User model only after db is initialized
     from app.models import User

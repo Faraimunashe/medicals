@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
+    <h2 class="h4">View Medical History for {{ patient.firstnames }} {{ patient.surname }}</h2>
+</div>
+
+<div class="card border-0 shadow table-wrapper table-responsive">
+    <div class="card-body">
+        <h5 class="card-title">Patient Information</h5>
+        <table class="table table-striped">
+            <tbody>
+                <tr>
+                    <th>Reference:</th>
+                    <td>{{ patient.reference }}</td>
+                </tr>
+                <tr>
+                    <th>Firstnames:</th>
+                    <td>{{ patient.firstnames }}</td>
+                </tr>
+                <tr>
+                    <th>Surnames:</th>
+                    <td>{{ patient.surname }}</td>
+                </tr>
+                <tr>
+                    <th>Gender:</th>
+                    <td>{{ patient.gender }}</td>
+                </tr>
+                <tr>
+                    <th>Date of Birth:</th>
+                    <td>{{ patient.dob.strftime('%Y-%m-%d') }}</td>
+                </tr>
+                <tr>
+                    <th>Phone:</th>
+                    <td>{{ patient.phone }}</td>
+                </tr>
+                <tr>
+                    <th>Address:</th>
+                    <td>{{ patient.address }}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h5 class="card-title">Medical History</h5>
+        <table class="table table-striped">
+            <tbody>
+                <tr>
+                    <th>Temperature:</th>
+                    <td>{{ medical.temperature }} °C</td>
+                </tr>
+                <tr>
+                    <th>Blood Pressure:</th>
+                    <td>{{ medical.bp }}</td>
+                </tr>
+                <tr>
+                    <th>Description:</th>
+                    <td>{{ medical.description }}</td>
+                </tr>
+                <tr>
+                    <th>Diagnosis:</th>
+                    <td>{{ medical.diagnosis }}</td>
+                </tr>
+                <tr>
+                    <th>Plan:</th>
+                    <td>{{ medical.plan }}</td>
+                </tr>
+                <tr>
+                    <th>Date Recorded:</th>
+                    <td>{{ medical.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="card-footer">
+        <a href="{{ url_for('medicals.medicals') }}" class="btn btn-secondary">Back to Medical History List</a>
+        <a href="{{ url_for('medicals.update_medicals', id=medical.id) }}" class="btn btn-primary">Edit Medical Record</a>
+    </div>
+</div>
+{% endblock %}
