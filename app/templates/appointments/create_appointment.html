@@ -6,15 +6,17 @@
                 <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
                     <li class="breadcrumb-item">
                         <a href="{{ url_for('dashboard.dashboard') }}">
-                            <svg class="icon icon-xxs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                            <svg class="icon icon-xxs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                            </svg>
                         </a>
                     </li>
                     <li class="breadcrumb-item"><a href="{{ url_for('dashboard.dashboard') }}">Dashboard</a></li>
-                    <li class="breadcrumb-item"><a href="{{ url_for('patients.patients') }}">Patients</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">New</li>
+                    <li class="breadcrumb-item"><a href="{{ url_for('appointments.appointments') }}">Appointments</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Create</li>
                 </ol>
             </nav>
-            <h2 class="h4">Create Patient</h2>
+            <h2 class="h4">Create Appointment</h2>
         </div>
     </div>
 
@@ -26,12 +28,12 @@
                         {% if "error" in messages[0] %}
                             <div class="alert alert-danger" role="alert">
                                 <i class="fa fa-exclamation-triangle"></i>
-                                {{messages[0]}}
+                                {{ messages[0] }}
                             </div>
                         {% else %}
                             <div class="alert alert-success" role="alert">
-                                <i class="fa fa-exclamation-triangle"></i>
-                                {{messages[0]}}
+                                <i class="fa fa-check-circle"></i>
+                                {{ messages[0] }}
                             </div>
                         {% endif %}
                     {% endif %}
@@ -39,82 +41,72 @@
             </div>
         </div>
     </div>
+
     <div class="card border-0 shadow table-wrapper table-responsive">
-        <form method="POST" action="{{ url_for('patients.create_patient') }}">
+        <form method="POST" action="{{ url_for('appointments.create_appointment') }}">
             {{ form.hidden_tag() }} 
             <div class="card-body">
                 <div class="mb-3">
-                    {{ form.firstnames.label(class="form-label") }}
-                    {{ form.firstnames(class="form-control" + (' is-invalid' if form.firstnames.errors else '')) }}
-                    {% if form.firstnames.errors %}
+                    {{ form.doctor_id.label(class="form-label") }}
+                    {{ form.doctor_id(class="form-control" + (' is-invalid' if form.doctor_id.errors else '')) }}
+                    {% if form.doctor_id.errors %}
                         <div class="invalid-feedback">
-                            {% for error in form.firstnames.errors %}
+                            {% for error in form.doctor_id.errors %}
                                 <div>{{ error }}</div>
                             {% endfor %}
                         </div>
                     {% endif %}
                 </div>
                 <div class="mb-3">
-                    {{ form.surname.label(class="form-label") }}
-                    {{ form.surname(class="form-control" + (' is-invalid' if form.surname.errors else '')) }}
-                    {% if form.surname.errors %}
+                    {{ form.branch_id.label(class="form-label") }}
+                    {{ form.branch_id(class="form-control" + (' is-invalid' if form.branch_id.errors else '')) }}
+                    {% if form.branch_id.errors %}
                         <div class="invalid-feedback">
-                            {% for error in form.surname.errors %}
+                            {% for error in form.branch_id.errors %}
                                 <div>{{ error }}</div>
                             {% endfor %}
                         </div>
                     {% endif %}
                 </div>
                 <div class="mb-3">
-                    {{ form.gender.label(class="form-label") }}
-                    {{ form.gender(class="form-select" + (' is-invalid' if form.gender.errors else '')) }}
-                    {% if form.gender.errors %}
+                    {{ form.reference.label(class="form-label") }}
+                    {{ form.reference(class="form-control" + (' is-invalid' if form.reference.errors else '')) }}
+                    {% if form.reference.errors %}
                         <div class="invalid-feedback">
-                            {% for error in form.gender.errors %}
+                            {% for error in form.reference.errors %}
                                 <div>{{ error }}</div>
                             {% endfor %}
                         </div>
                     {% endif %}
                 </div>
                 <div class="mb-3">
-                    {{ form.dob.label(class="form-label") }}
-                    {{ form.dob(class="form-control" + (' is-invalid' if form.dob.errors else '')) }}
-                    {% if form.dob.errors %}
+                    {{ form.appointment_date.label(class="form-label") }}
+                    {{ form.appointment_date(class="form-control" + (' is-invalid' if form.appointment_date.errors else '')) }}
+                    {% if form.appointment_date.errors %}
                         <div class="invalid-feedback">
-                            {% for error in form.dob.errors %}
+                            {% for error in form.appointment_date.errors %}
                                 <div>{{ error }}</div>
                             {% endfor %}
                         </div>
                     {% endif %}
                 </div>
                 <div class="mb-3">
-                    {{ form.email.label(class="form-label") }}
-                    {{ form.email(class="form-control" + (' is-invalid' if form.email.errors else '')) }}
-                    {% if form.email.errors %}
+                    {{ form.appointment_time.label(class="form-label") }}
+                    {{ form.appointment_time(class="form-control" + (' is-invalid' if form.appointment_time.errors else '')) }}
+                    {% if form.appointment_time.errors %}
                         <div class="invalid-feedback">
-                            {% for error in form.email.errors %}
+                            {% for error in form.appointment_time.errors %}
                                 <div>{{ error }}</div>
                             {% endfor %}
                         </div>
                     {% endif %}
                 </div>
                 <div class="mb-3">
-                    {{ form.phone.label(class="form-label") }}
-                    {{ form.phone(class="form-control" + (' is-invalid' if form.phone.errors else '')) }}
-                    {% if form.phone.errors %}
+                    {{ form.notes.label(class="form-label") }}
+                    {{ form.notes(class="form-control" + (' is-invalid' if form.notes.errors else '')) }}
+                    {% if form.notes.errors %}
                         <div class="invalid-feedback">
-                            {% for error in form.phone.errors %}
-                                <div>{{ error }}</div>
-                            {% endfor %}
-                        </div>
-                    {% endif %}
-                </div>
-                <div class="mb-3">
-                    {{ form.address.label(class="form-label") }}
-                    {{ form.address(class="form-control" + (' is-invalid' if form.address.errors else '')) }}
-                    {% if form.address.errors %}
-                        <div class="invalid-feedback">
-                            {% for error in form.address.errors %}
+                            {% for error in form.notes.errors %}
                                 <div>{{ error }}</div>
                             {% endfor %}
                         </div>
@@ -123,8 +115,8 @@
             </div>
             
             <div class="card-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Register Patient</button>
+                <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Submit</button>
             </div>
         </form>
     </div>

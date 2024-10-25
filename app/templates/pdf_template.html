@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Report</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f7fa;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .card {
+            margin-bottom: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            background-color: #007bff;
+            color: white;
+            padding: 15px;
+            font-size: 1.25em;
+            text-align: center;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        .table th, .table td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+
+        .table th {
+            background-color: #f8f9fa;
+            font-weight: bold;
+        }
+
+        .table tr:nth-child(odd) {
+            background-color: #f2f2f2;
+        }
+
+        .alert {
+            padding: 15px;
+            margin-top: 20px;
+            background-color: #d1ecf1;
+            color: #0c5460;
+            border-radius: 5px;
+            border: 1px solid #bee5eb;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 10px;
+            }
+            .card-header {
+                font-size: 1.1em;
+            }
+            .table th, .table td {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="card-header">Patient Information</div>
+            <div class="card-body">
+                <table class="table">
+                    <tbody>
+                        <tr><th>Reference:</th><td>{{ patient.reference }}</td></tr>
+                        <tr><th>Firstnames:</th><td>{{ patient.firstnames }}</td></tr>
+                        <tr><th>Surnames:</th><td>{{ patient.surname }}</td></tr>
+                        <tr><th>Gender:</th><td>{{ patient.gender }}</td></tr>
+                        <tr><th>Date of Birth:</th><td>{{ patient.dob.strftime('%Y-%m-%d') }}</td></tr>
+                        <tr><th>Email:</th><td>{{ patient.email }}</td></tr>
+                        <tr><th>Phone:</th><td>{{ patient.phone }}</td></tr>
+                        <tr><th>Address:</th><td>{{ patient.address }}</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">Medical History</div>
+            <div class="card-body">
+                {% if medicals %}
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Description</th>
+                                <th>Diagnosis</th>
+                                <th>Plan</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for record in medicals %}
+                                <tr>
+                                    <td>{{ record.created_at.strftime('%Y-%m-%d') }}</td>
+                                    <td>{{ record.description }}</td>
+                                    <td>{{ record.diagnosis }}</td>
+                                    <td>{{ record.plan }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <div class="alert">
+                        No medical history available for this patient.
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>

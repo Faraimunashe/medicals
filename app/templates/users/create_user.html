@@ -6,15 +6,17 @@
                 <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
                     <li class="breadcrumb-item">
                         <a href="{{ url_for('dashboard.dashboard') }}">
-                            <svg class="icon icon-xxs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                            <svg class="icon icon-xxs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                            </svg>
                         </a>
                     </li>
                     <li class="breadcrumb-item"><a href="{{ url_for('dashboard.dashboard') }}">Dashboard</a></li>
-                    <li class="breadcrumb-item"><a href="{{ url_for('patients.patients') }}">Patients</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">New</li>
+                    <li class="breadcrumb-item"><a href="{{ url_for('users.users') }}">Users</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Create User</li>
                 </ol>
             </nav>
-            <h2 class="h4">Create Patient</h2>
+            <h2 class="h4">Create User</h2>
         </div>
     </div>
 
@@ -26,12 +28,12 @@
                         {% if "error" in messages[0] %}
                             <div class="alert alert-danger" role="alert">
                                 <i class="fa fa-exclamation-triangle"></i>
-                                {{messages[0]}}
+                                {{ messages[0] }}
                             </div>
                         {% else %}
                             <div class="alert alert-success" role="alert">
-                                <i class="fa fa-exclamation-triangle"></i>
-                                {{messages[0]}}
+                                <i class="fa fa-check-circle"></i>
+                                {{ messages[0] }}
                             </div>
                         {% endif %}
                     {% endif %}
@@ -39,49 +41,17 @@
             </div>
         </div>
     </div>
+
     <div class="card border-0 shadow table-wrapper table-responsive">
-        <form method="POST" action="{{ url_for('patients.create_patient') }}">
+        <form method="POST" action="{{ url_for('users.create_user') }}">
             {{ form.hidden_tag() }} 
             <div class="card-body">
                 <div class="mb-3">
-                    {{ form.firstnames.label(class="form-label") }}
-                    {{ form.firstnames(class="form-control" + (' is-invalid' if form.firstnames.errors else '')) }}
-                    {% if form.firstnames.errors %}
+                    {{ form.name.label(class="form-label") }}
+                    {{ form.name(class="form-control" + (' is-invalid' if form.name.errors else '')) }}
+                    {% if form.name.errors %}
                         <div class="invalid-feedback">
-                            {% for error in form.firstnames.errors %}
-                                <div>{{ error }}</div>
-                            {% endfor %}
-                        </div>
-                    {% endif %}
-                </div>
-                <div class="mb-3">
-                    {{ form.surname.label(class="form-label") }}
-                    {{ form.surname(class="form-control" + (' is-invalid' if form.surname.errors else '')) }}
-                    {% if form.surname.errors %}
-                        <div class="invalid-feedback">
-                            {% for error in form.surname.errors %}
-                                <div>{{ error }}</div>
-                            {% endfor %}
-                        </div>
-                    {% endif %}
-                </div>
-                <div class="mb-3">
-                    {{ form.gender.label(class="form-label") }}
-                    {{ form.gender(class="form-select" + (' is-invalid' if form.gender.errors else '')) }}
-                    {% if form.gender.errors %}
-                        <div class="invalid-feedback">
-                            {% for error in form.gender.errors %}
-                                <div>{{ error }}</div>
-                            {% endfor %}
-                        </div>
-                    {% endif %}
-                </div>
-                <div class="mb-3">
-                    {{ form.dob.label(class="form-label") }}
-                    {{ form.dob(class="form-control" + (' is-invalid' if form.dob.errors else '')) }}
-                    {% if form.dob.errors %}
-                        <div class="invalid-feedback">
-                            {% for error in form.dob.errors %}
+                            {% for error in form.name.errors %}
                                 <div>{{ error }}</div>
                             {% endfor %}
                         </div>
@@ -99,22 +69,44 @@
                     {% endif %}
                 </div>
                 <div class="mb-3">
-                    {{ form.phone.label(class="form-label") }}
-                    {{ form.phone(class="form-control" + (' is-invalid' if form.phone.errors else '')) }}
-                    {% if form.phone.errors %}
+                    {{ form.password.label(class="form-label") }}
+                    {{ form.password(class="form-control" + (' is-invalid' if form.password.errors else '')) }}
+                    {% if form.password.errors %}
                         <div class="invalid-feedback">
-                            {% for error in form.phone.errors %}
+                            {% for error in form.password.errors %}
                                 <div>{{ error }}</div>
                             {% endfor %}
                         </div>
                     {% endif %}
                 </div>
                 <div class="mb-3">
-                    {{ form.address.label(class="form-label") }}
-                    {{ form.address(class="form-control" + (' is-invalid' if form.address.errors else '')) }}
-                    {% if form.address.errors %}
+                    {{ form.confirm_password.label(class="form-label") }}
+                    {{ form.confirm_password(class="form-control" + (' is-invalid' if form.confirm_password.errors else '')) }}
+                    {% if form.confirm_password.errors %}
                         <div class="invalid-feedback">
-                            {% for error in form.address.errors %}
+                            {% for error in form.confirm_password.errors %}
+                                <div>{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="mb-3">
+                    {{ form.role.label(class="form-label") }}
+                    {{ form.role(class="form-control" + (' is-invalid' if form.role.errors else '')) }}
+                    {% if form.role.errors %}
+                        <div class="invalid-feedback">
+                            {% for error in form.role.errors %}
+                                <div>{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="mb-3">
+                    {{ form.branch.label(class="form-label") }}
+                    {{ form.branch(class="form-control" + (' is-invalid' if form.branch.errors else '')) }}
+                    {% if form.branch.errors %}
+                        <div class="invalid-feedback">
+                            {% for error in form.branch.errors %}
                                 <div>{{ error }}</div>
                             {% endfor %}
                         </div>
@@ -123,8 +115,8 @@
             </div>
             
             <div class="card-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Register Patient</button>
+                <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Submit</button>
             </div>
         </form>
     </div>

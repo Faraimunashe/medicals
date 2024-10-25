@@ -7,6 +7,7 @@ from datetime import date
 class Branch(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
+    users = db.relationship('User', backref='branch', lazy=True)
 
     def __init__(self, name):
         self.name = name
@@ -16,7 +17,7 @@ class Branch(db.Model):
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    branch_id = db.Column(db.Integer, nullable=False)
+    branch_id = db.Column(db.Integer, db.ForeignKey('branch.id'), nullable=False)
     email = db.Column(db.String(100), unique=True)
     password = db.Column(db.String(100))
     name = db.Column(db.String(100))
@@ -39,16 +40,18 @@ class Patient(db.Model):
     firstnames = db.Column(db.String(20), nullable=False)
     surname = db.Column(db.String(20), nullable=False)
     gender = db.Column(db.String(20), nullable=False)
+    email = db.Column(db.String(100), nullable=False)
     phone = db.Column(db.String(20), nullable=False)
     address = db.Column(db.String(20), nullable=False)
     dob = db.Column(db.Date, default=date.today)
     created_at = db.Column(db.DateTime(timezone=True), default=datetime.datetime.now)
 
-    def __init__(self, reference, firstnames, surname, gender, phone, address, dob, created_at):
+    def __init__(self, reference, firstnames, surname, gender, email, phone, address, dob, created_at):
         self.reference = reference
         self.firstnames = firstnames
         self.surname = surname
         self.gender = gender
+        self.email = email
         self.phone = phone
         self.address = address
         self.dob = dob

@@ -19,6 +19,7 @@ def patients():
             (Patient.reference.ilike(f'%{search_query}%')) |
             (Patient.firstnames.ilike(f'%{search_query}%')) |
             (Patient.surname.ilike(f'%{search_query}%')) |
+            (Patient.email.ilike(f'%{search_query}%')) |
             (Patient.phone.ilike(f'%{search_query}%'))
         ).all()
     else:
@@ -47,6 +48,7 @@ def create_patient():
             firstnames=form.firstnames.data,
             surname=form.surname.data,
             gender=form.gender.data,
+            email=form.email.data,
             phone=form.phone.data,
             dob=form.dob.data,
             address=form.address.data,
@@ -77,6 +79,7 @@ def update_patient(id):
         patient.firstnames = form.firstnames.data
         patient.surname = form.surname.data
         patient.gender = form.gender.data
+        patient.email = form.email.data,
         patient.phone = form.phone.data
         patient.dob = form.dob.data
         patient.address = form.address.data

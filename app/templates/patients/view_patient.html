@@ -22,6 +22,9 @@
             <a href="{{ url_for('patients.update_patient', id=patient.id) }}" class="btn btn-sm btn-gray-800 d-inline-flex align-items-center m-2" >
                 Edit
             </a>
+            <a href="{{ url_for('reports.generate_pdf', id=patient.id) }}" class="btn btn-sm btn-secondary d-inline-flex align-items-center m-2" >
+                Generate Report
+            </a>
             <form action="{{ url_for('patients.delete_patient', id=patient.id) }}" method="POST" style="display:inline;">
                 <button type="submit" class="btn btn-danger m-2" onclick="return confirm('Are you sure you want to delete this patient?');">Delete</button>
             </form>
@@ -60,6 +63,7 @@
                     <tr> <th>Surnames:</th> <td>{{ patient.surname }}</td> </tr>
                     <tr> <th>Gender:</th> <td>{{ patient.gender }}</td> </tr>
                     <tr> <th>Date of Birth:</th> <td>{{ patient.dob.strftime('%Y-%m-%d') }}</td> </tr>
+                    <tr> <th>Email:</th> <td>{{ patient.email }}</td> </tr>
                     <tr> <th>Phone:</th> <td>{{ patient.phone }}</td> </tr>
                     <tr> <th>Address:</th> <td>{{ patient.address }}</td> </tr>
                 </body>

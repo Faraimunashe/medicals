@@ -1,5 +1,205 @@
 {% extends "base.html" %}
 {% block content %}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
+        <div class="d-block mb-4 mb-md-0">
+            <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
+                <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
+                    <li class="breadcrumb-item">
+                        <a href="{{ url_for('dashboard.dashboard') }}">
+                            <svg class="icon icon-xxs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item"><a href="{{ url_for('dashboard.dashboard') }}">Dashboard</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Insights</li>
+                </ol>
+            </nav>
+            <h2 class="h4">Dashboard</h2>
+        </div>
+    </div>
+
+    <div class="card card-body border-0 shadow mb-3">
+        <h2>Patients Age Distribution</h2>
+        <canvas id="ageChart" height="300"></canvas>
+    </div>
+    
+    <div class="card card-body border-0 shadow mb-3">
+        <h2>Patients Gender Distribution</h2>
+        <canvas id="genderChart" height="300"></canvas>
+    </div>
+
+    <script>
+        // Gender Distribution Chart
+        const genderCounts = {{ gender_counts | tojson }};
+        const genderLabels = Object.keys(genderCounts);
+        const genderData = Object.values(genderCounts);
+
+        const genderCtx = document.getElementById('genderChart').getContext('2d');
+        const genderChart = new Chart(genderCtx, {
+            type: 'pie',
+            data: {
+                labels: genderLabels,
+                datasets: [{
+                    label: 'Gender Distribution',
+                    data: genderData,
+                    backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'], // Add more colors as needed
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Gender Distribution'
+                    }
+                }
+            }
+        });
+
+        // Age Distribution Chart
+        const ageCounts = {{ age_counts | tojson }};
+        const ageLabels = Object.keys(ageCounts);
+        const ageData = Object.values(ageCounts);
+
+        const ageCtx = document.getElementById('ageChart').getContext('2d');
+        const ageChart = new Chart(ageCtx, {
+            type: 'bar',
+            data: {
+                labels: ageLabels,
+                datasets: [{
+                    label: 'Age Distribution',
+                    data: ageData,
+                    backgroundColor: '#36A2EB', // Add more colors as needed
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Age Distribution'
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+
+    <div class="card card-body border-0 shadow mb-3">
+        <h2>Temperature Trends</h2>
+        <canvas id="temperatureChart" height="300"></canvas>
+    </div>
+
+    <div class="card card-body border-0 shadow mb-3">
+        <h2>Diagnosis Frequency</h2>
+        <canvas id="diagnosisChart" height="300"></canvas>
+    </div>
+
+    <div class="card card-body border-0 shadow mb-3">
+        <h2>Treatment Plan Distribution</h2>
+        <canvas id="treatmentChart" height="300"></canvas>
+    </div>
+
+    <script>
+        // Sample data for demonstration
+        const temperatureData = {{ temperature_data | tojson }};
+        const diagnosisCounts = {{ diagnosis_counts | tojson }};
+        const treatmentCounts = {{ treatment_counts | tojson }};
+
+        // Temperature Trends Chart
+        const temperatureCtx = document.getElementById('temperatureChart').getContext('2d');
+        const temperatureChart = new Chart(temperatureCtx, {
+            type: 'line',
+            data: {
+                labels: temperatureData.dates, // Dates should be an array of date strings
+                datasets: [{
+                    label: 'Temperature (°C)',
+                    data: temperatureData.values, // Temperature values
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Temperature Trends'
+                    }
+                }
+            }
+        });
+
+        // Diagnosis Frequency Chart
+        const diagnosisCtx = document.getElementById('diagnosisChart').getContext('2d');
+        const diagnosisChart = new Chart(diagnosisCtx, {
+            type: 'pie',
+            data: {
+                labels: Object.keys(diagnosisCounts), // Diagnosis labels
+                datasets: [{
+                    label: 'Diagnosis Frequency',
+                    data: Object.values(diagnosisCounts), // Frequency counts
+                    backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'], // Add colors as needed
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Diagnosis Frequency'
+                    }
+                }
+            }
+        });
+
+        // Treatment Plan Distribution Chart
+        const treatmentCtx = document.getElementById('treatmentChart').getContext('2d');
+        const treatmentChart = new Chart(treatmentCtx, {
+            type: 'bar',
+            data: {
+                labels: Object.keys(treatmentCounts), // Treatment plan labels
+                datasets: [{
+                    label: 'Number of Plans',
+                    data: Object.values(treatmentCounts), // Counts of each plan
+                    backgroundColor: '#36A2EB', // Add more colors as needed
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Treatment Plan Distribution'
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
 
 {% endblock %}
