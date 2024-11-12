@@ -17,7 +17,7 @@ class LoginForm(FlaskForm):
    
 
 class UserForm(FlaskForm):
-    role = SelectField('Role', choices=[(2, 'Doctor'), (1, 'Admin')], validators=[DataRequired()]) 
+    role = SelectField('Role', choices=[(3, 'Nurse'),(2, 'Doctor'), (1, 'Admin')], validators=[DataRequired()]) 
     branch = QuerySelectField('Branch', query_factory=lambda: Branch.query.all(), get_label='name', allow_blank=False, validators=[DataRequired()])
     name = StringField('Name', validators=[DataRequired(), Length(min=2, max=100)])
     email = StringField('Email', validators=[DataRequired(), Email()])
@@ -59,8 +59,8 @@ class MedicalHistoryForm(FlaskForm):
     temperature = DecimalField('Temperature (°C)', validators=[DataRequired(), NumberRange(min=30, max=45)])
     bp = StringField('Blood Pressure', validators=[DataRequired(), Regexp(r'\d{2,3}/\d{2,3}', message="BP format should be like 120/80")])
     description = StringField('Description', validators=[DataRequired()])
-    diagnosis = StringField('Diagnosis', validators=[DataRequired()])
-    plan = StringField('Plan', validators=[DataRequired()])
+    diagnosis = StringField('Diagnosis')
+    plan = StringField('Plan')
     submit = SubmitField('Submit')
     
 class AppointmentForm(FlaskForm):

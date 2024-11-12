@@ -6,6 +6,7 @@ from app.forms import PatientForm
 from datetime import datetime
 import random
 import string
+from app.audit_helper import log_create, log_update, log_delete
 
 patients_bp = Blueprint('patients', __name__)
 
@@ -56,6 +57,8 @@ def create_patient():
         )
         db.session.add(new_patient)
         db.session.commit()
+        
+        log_create(new_patient)
         flash('Patient created successfully!')
         return redirect(url_for('patients.patients'))
     # else:
@@ -73,6 +76,7 @@ def view_patient(id):
 @patients_bp.route('/patients/edit/<int:id>', methods=['GET', 'POST'])
 def update_patient(id):
     patient = Patient.query.get_or_404(id)
+    patient_old = patient
     form = PatientForm(obj=patient)
     
     if form.validate_on_submit():
@@ -85,6 +89,7 @@ def update_patient(id):
         patient.address = form.address.data
         
         db.session.commit()
+        log_update(patient, patient_old)
         flash('Patient updated successfully!')
         return redirect(url_for('patients.patients'))
     
@@ -95,5 +100,6 @@ def delete_patient(id):
     patient = Patient.query.get_or_404(id)
     db.session.delete(patient)
     db.session.commit()
+    log_delete(patient)
     flash('Patient deleted successfully!', 'danger')
     return redirect(url_for('patients.patients'))

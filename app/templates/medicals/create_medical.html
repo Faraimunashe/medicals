@@ -101,28 +101,6 @@
                         </div>
                     {% endif %}
                 </div>
-                <div class="mb-3">
-                    {{ form.diagnosis.label(class="form-label") }}
-                    {{ form.diagnosis(class="form-control" + (' is-invalid' if form.diagnosis.errors else '')) }}
-                    {% if form.diagnosis.errors %}
-                        <div class="invalid-feedback">
-                            {% for error in form.diagnosis.errors %}
-                                <div>{{ error }}</div>
-                            {% endfor %}
-                        </div>
-                    {% endif %}
-                </div>
-                <div class="mb-3">
-                    {{ form.plan.label(class="form-label") }}
-                    {{ form.plan(class="form-control" + (' is-invalid' if form.plan.errors else '')) }}
-                    {% if form.plan.errors %}
-                        <div class="invalid-feedback">
-                            {% for error in form.plan.errors %}
-                                <div>{{ error }}</div>
-                            {% endfor %}
-                        </div>
-                    {% endif %}
-                </div>
             </div>
             
             <div class="card-footer">

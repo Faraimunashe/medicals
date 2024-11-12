@@ -5,6 +5,7 @@ from app.models import Appointment, Patient, User, Branch
 from app.forms import AppointmentForm
 from datetime import datetime
 from app.notification import send_email
+from app.audit_helper import log_create, log_update, log_delete
 
 appointments_bp = Blueprint('appointments', __name__)
 
@@ -43,6 +44,7 @@ def create_appointment():
         
         db.session.add(new_appointment)
         db.session.commit()
+        log_create(new_appointment)
         
         doc = User.query.get_or_404(new_appointment.doctor_id)
         
@@ -66,6 +68,7 @@ def view_appointment(id):
 @login_required
 def update_appointment(id):
     appointment = Appointment.query.get_or_404(id)
+    appointment_old = appointment
     form = AppointmentForm(obj=appointment)
 
     if form.validate_on_submit():
@@ -81,6 +84,7 @@ def update_appointment(id):
         appointment.appointment_time = form.appointment_time.data
         appointment.notes = form.notes.data
         db.session.commit()
+        log_update(appointment, appointment_old)
         flash('Appointment updated successfully!')
         return redirect(url_for('appointments.appointments'))
 
@@ -94,6 +98,7 @@ def delete_appointment(id):
     try:
         db.session.delete(appointment)
         db.session.commit()
+        log_delete(appointment)
         flash('Appointment deleted successfully!')
     except Exception as e:
         db.session.rollback()

@@ -16,9 +16,11 @@
             <h2 class="h4">Medical History</h2>
         </div>
         <div class="btn-toolbar mb-2 mb-md-0">
-            <a href="{{ url_for('medicals.create_medicals') }}" class="btn btn-sm btn-gray-800 d-inline-flex align-items-center">
+            <a href="{{ url_for('medicals.create_medicals') }}" class="btn btn-sm btn-gray-800 d-inline-flex align-items-center m-1">
                 Add New Medical Record
             </a>
+            <a href="{{ url_for('medicals.export_medicals', search=search_query) }}" class="btn btn-sm btn-success d-inline-flex align-items-center m-1">Export to Excel</a>
+
         </div>
     </div>
 
@@ -52,22 +54,33 @@
     </div>
 
     <div class="card card-body border-0 shadow table-wrapper table-responsive">
+        <code>click on the column label for sorting</code>
         <table class="table table-hover">
             <thead>
                 <tr>
-                    <th class="border-gray-200">#</th>
-                    <th class="border-gray-200">Patient Reference</th>
-                    <th class="border-gray-200">Temperature</th>
-                    <th class="border-gray-200">Blood Pressure</th>
-                    <th class="border-gray-200">Diagnosis</th>
+                    <th class="border-gray-200">
+                        <a href="{{ url_for('medicals.medicals', sort_by='id', sort_order='asc' if sort_by != 'id' or sort_order == 'desc' else 'desc') }}">#</a>
+                    </th>
+                    <th class="border-gray-200">
+                        <a href="{{ url_for('medicals.medicals', sort_by='reference', sort_order='asc' if sort_by != 'reference' or sort_order == 'desc' else 'desc') }}">Patient Reference</a>
+                    </th>
+                    <th class="border-gray-200">
+                        <a href="{{ url_for('medicals.medicals', sort_by='temperature', sort_order='asc' if sort_by != 'temperature' or sort_order == 'desc' else 'desc') }}">Temperature</a>
+                    </th>
+                    <th class="border-gray-200">
+                        <a href="{{ url_for('medicals.medicals', sort_by='bp', sort_order='asc' if sort_by != 'bp' or sort_order == 'desc' else 'desc') }}">Blood Pressure</a>
+                    </th>
+                    <th class="border-gray-200">
+                        <a href="{{ url_for('medicals.medicals', sort_by='diagnosis', sort_order='asc' if sort_by != 'diagnosis' or sort_order == 'desc' else 'desc') }}">Diagnosis</a>
+                    </th>
                     <th class="border-gray-200">Action</th>
                 </tr>
             </thead>
             <tbody>
-                {% for record in medicals %}
+                {% for record, patient in medicals %}
                     <tr>
                         <td>{{ record.id }}</td>
-                        <td>{{ record.reference }}</td>
+                        <td>{{ patient.reference }}</td>
                         <td>{{ record.temperature }} °C</td>
                         <td>{{ record.bp }}</td>
                         <td>{{ record.diagnosis }}</td>
@@ -82,5 +95,6 @@
                 {% endfor %}
             </tbody>
         </table>
+                
     </div>
 {% endblock %}

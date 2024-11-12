@@ -2,9 +2,9 @@ from twilio.rest import Client
 from flask_mail import Message
 from . import mail
 
-account_sid = 'ACb3fb519e3ceb5ddb3424e90fdc0ca876'
-auth_token = '7bb573a83057caf443b8fd638b23979a'
-from_number = '+12706122769'
+account_sid = ''
+auth_token = ''
+from_number = ''
 
 def send_sms():
     client = Client(account_sid, auth_token)

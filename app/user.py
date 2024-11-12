@@ -5,6 +5,7 @@ from app.models import User, Branch
 from app.forms import UserForm
 from werkzeug.security import generate_password_hash, check_password_hash
 from passlib.hash import sha256_crypt
+from app.audit_helper import log_create, log_update, log_delete
 
 users_bp = Blueprint('users', __name__)
 
@@ -32,6 +33,7 @@ def create_user():
 
         db.session.add(new_user)
         db.session.commit()
+        log_create(new_user)
         flash('User created successfully!')
         return redirect(url_for('users.users'))
     
@@ -49,6 +51,7 @@ def view_user(id):
 @login_required
 def update_user(id):
     user = User.query.get_or_404(id)
+    user_old = user
     form = UserForm(obj=user)
 
     if form.validate_on_submit():
@@ -61,6 +64,7 @@ def update_user(id):
             user.password = generate_password_hash(form.password.data, method='sha256')
 
         db.session.commit()
+        log_update(user, user_old)
         flash('User updated successfully!')
         return redirect(url_for('users.users'))
 
@@ -74,6 +78,7 @@ def delete_user(id):
     try:
         db.session.delete(user)
         db.session.commit()
+        log_delete(user)
         flash('User deleted successfully!')
     except Exception as e:
         db.session.rollback()

@@ -11,14 +11,14 @@ mail = Mail()
 def create_app():
     app = Flask(__name__)
     app.config['SECRET_KEY'] = 'ProfessorSecret'
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///medicalss.db'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///medical.db'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     
     app.config['MAIL_SERVER'] = 'smtp.gmail.com'
     app.config['MAIL_PORT'] = 587
     app.config['MAIL_USE_TLS'] = True
     app.config['MAIL_USERNAME'] = 'faraimunashe.m11@gmail.com'
-    app.config['MAIL_PASSWORD'] = 'tiyurhayezbpifcv'
+    app.config['MAIL_PASSWORD'] = 'vdpdwbzmbhflivoc'
     app.config['MAIL_DEFAULT_SENDER'] = 'faraimunashe.m11@gmail.com'
 
 
@@ -39,6 +39,8 @@ def create_app():
     from .appointment import appointments_bp
     from .user import users_bp
     from .report import report_bp
+    from .audit import audits_bp
+    from .plan import plan_bp
 
     app.register_blueprint(auth_bp)
     app.register_blueprint(dashboard_bp)
@@ -47,9 +49,11 @@ def create_app():
     app.register_blueprint(appointments_bp)
     app.register_blueprint(users_bp)
     app.register_blueprint(report_bp)
+    app.register_blueprint(audits_bp)
+    app.register_blueprint(plan_bp)
 
     # Import User model only after db is initialized
-    from app.models import User
+    from app.models import User, AuditLog
 
     @login_manager.user_loader
     def load_user(user_id):
@@ -58,5 +62,6 @@ def create_app():
     # Create the database tables if they don't exist
     with app.app_context():
         db.create_all()
+        
 
     return app
